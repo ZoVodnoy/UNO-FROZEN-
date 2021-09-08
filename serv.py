@@ -39,12 +39,8 @@ def start_server():
 		user_socket.send("Connected!".encode("utf-8"))
 		data = user_socket.recv(2048)
 
-		print(data.decode("utf-8"))
+		print(type(data.decode("utf-8")))
 		users.append(user_socket)
-
-
-
-
 
 
 if __name__ == '__main__':
