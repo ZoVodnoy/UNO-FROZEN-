@@ -25,9 +25,10 @@ def send_all(data):
 
 
 def listen_user(user):
+	print('Listening')
 	while True:
 		data = user.recv(2048)
-		print("User send {data}")
+		print(f"User send {data}")
 		send_all(data)
 
 
@@ -35,12 +36,17 @@ def start_server():
 	while True:
 		user_socket, address = server.accept()
 		print(f"User {user_socket} connected!")
-
 		user_socket.send("Connected!".encode("utf-8"))
-		data = user_socket.recv(2048)
 
-		print(type(data.decode("utf-8")))
 		users.append(user_socket)
+		listen_accepted_user = threading.Thread(
+
+			target=listen_user,
+			args=(user_socket,)
+
+			)
+
+		listen_accepted_user.start()
 
 
 if __name__ == '__main__':

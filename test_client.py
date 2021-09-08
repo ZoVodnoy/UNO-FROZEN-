@@ -1,5 +1,6 @@
 import socket
 import datetime
+from threading import Thread
 
 dt_now= datetime.datetime.now()
 
@@ -15,9 +16,18 @@ client.connect(
 	)
 
 
-while True:
-	data = client.recv(2048)
-	print(data.decode("utf-8"))
-	a = input("text blyat ")
-	client.send(a.encode("utf-8"))
-	client.send("aboba".encode("utf-8"))
+def listen_server():
+	while True:
+		data = client.recv(2048)
+		print(data.decode("utf-8"))
+
+
+def send_server():
+	listen_thread = Thread(target=listen_server)
+	listen_thread.start()
+	while True:
+		client.send(input(":::").encode("utf-8"))
+
+
+if __name__ == '__main__':
+	send_server()
